@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4eee5">
+<title>My Week — Weekly Planner</title>
+<style>
+:root{--bg:#f5f0e8;--card:#fffdf9;--ink:#49382e;--muted:#927e6d;--line:#e7dbcd;--brown:#8b684f;--brown2:#6e503d;--cream:#eee2d3;--sage:#aab19a;--shadow:0 7px 22px rgba(92,65,43,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:92px}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:680px;margin:0 auto;padding:22px 16px 30px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:750}
+h1{font-family:Georgia,serif;font-size:34px;line-height:1.05;margin:6px 0;color:var(--brown2);font-weight:600}
+.subtitle{color:var(--muted);font-size:13px}
+.round-btn{border:1px solid var(--line);background:var(--card);color:var(--brown2);border-radius:14px;width:44px;height:44px;font-size:20px;box-shadow:var(--shadow)}
+.weekbar{display:flex;align-items:center;justify-content:space-between;margin:18px 0 12px}
+.weekbar strong{font-size:14px}.weeknav{display:flex;gap:7px}.weeknav button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:7px 12px;color:var(--brown2)}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:18px}
+.day{border:1px solid var(--line);background:rgba(255,253,249,.72);border-radius:14px;padding:10px 1px 9px;text-align:center;color:var(--muted);min-width:0}
+.day .dname{font-size:10px;text-transform:uppercase;letter-spacing:.4px}.day .dnum{font-size:16px;font-weight:750;margin-top:5px;color:var(--ink)}.day .dot{height:4px;width:4px;border-radius:50%;background:transparent;margin:5px auto 0}
+.day.active{background:var(--brown);border-color:var(--brown);color:#fff}.day.active .dnum{color:white}.day.active .dot{background:#fff}
+.panel{background:var(--card);border:1px solid rgba(231,219,205,.9);border-radius:22px;padding:17px;margin:12px 0;box-shadow:var(--shadow)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}
+.panel h2{font-family:Georgia,serif;font-size:21px;font-weight:600;margin:0;color:var(--brown2)}
+.small-muted{font-size:12px;color:var(--muted)}
+.primary{background:var(--brown);color:#fff;border:0;border-radius:12px;padding:10px 13px;font-size:13px;font-weight:700}
+.secondary{background:var(--cream);color:var(--brown2);border:0;border-radius:11px;padding:9px 12px;font-size:13px;font-weight:650}
+.progress-wrap{display:flex;align-items:center;gap:12px}.progress{height:8px;background:var(--cream);border-radius:99px;overflow:hidden;flex:1}.progress span{display:block;height:100%;background:var(--brown);border-radius:99px;width:0;transition:width .2s}.percent{font-size:13px;font-weight:750;color:var(--brown2);min-width:34px;text-align:right}
+.task-list{display:grid;gap:9px}.task{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:14px;padding:11px;background:#fffefa}.check{appearance:none;width:19px;height:19px;border:1.5px solid #c7b39f;border-radius:6px;flex:0 0 19px;margin:1px 0 0;display:grid;place-items:center}.check:checked{background:var(--brown);border-color:var(--brown)}.check:checked:after{content:"✓";font-size:13px;color:white;font-weight:800}.task-main{min-width:0;flex:1}.task-title{font-size:14px;font-weight:650;overflow-wrap:anywhere}.task.done .task-title{text-decoration:line-through;color:#a9998a}.task-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}.tag{font-size:10px;border-radius:6px;padding:4px 6px;background:var(--cream);color:var(--brown2)}.tag.priority{background:#f0dcd0}.task-actions{display:flex;gap:4px}.icon-btn{border:0;background:transparent;color:var(--muted);font-size:16px;padding:3px}
+.empty{text-align:center;color:var(--muted);padding:22px 8px;font-size:13px}.empty span{display:block;font-size:25px;margin-bottom:6px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:750;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:11px;background:#fffefa;padding:11px;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brown)}.form-actions{display:flex;gap:8px;margin-top:12px}
+.hidden{display:none!important}
+.goal-row{display:flex;gap:8px;margin:10px 0}.goal-row input{flex:1;min-width:0;border:1px solid var(--line);border-radius:11px;padding:10px;background:#fffefa;color:var(--ink)}.goal{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid #f0e8df;font-size:13px}.goal:last-child{border-bottom:0}.goal input{accent-color:var(--brown)}
+.habits{display:grid;gap:10px}.habit{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px}.habit-days{display:flex;gap:4px}.habit-days button{width:25px;height:25px;border:1px solid var(--line);border-radius:8px;background:#fffefa;color:var(--muted);font-size:10px;padding:0}.habit-days button.on{background:var(--brown);color:#fff;border-color:var(--brown)}
+.notes{width:100%;min-height:100px;resize:vertical;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fffefa;color:var(--ink);line-height:1.5}
+.bottom-nav{position:fixed;z-index:5;bottom:0;left:0;right:0;background:rgba(255,253,249,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:8px}
+.bottom-nav button{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:12px;font-size:12px;font-weight:700}.bottom-nav button.active{background:var(--cream);color:var(--brown2)}
+.view{display:none}.view.active{display:block}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:var(--brown2);color:white;padding:10px 15px;border-radius:12px;font-size:12px;box-shadow:var(--shadow);z-index:10;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+@media(min-width:600px){.app{padding-top:32px}.days{gap:9px}.day{padding:12px 3px}.panel{padding:20px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top">
+ <div><div class="eyebrow">A little plan, a calmer week</div><h1>My Week <span aria-hidden="true">✿</span></h1><div class="subtitle" id="todayLabel">Make space for what matters.</div></div>
+ <button class="round-btn" id="todayBtn" title="Go to today" aria-label="Go to today">⌂</button>
+</header>
+
+<section id="homeView" class="view active">
+ <div class="weekbar"><strong id="weekLabel">This week</strong><div class="weeknav"><button id="prevWeek" aria-label="Previous week">‹</button><button id="nextWeek" aria-label="Next week">›</button></div></div>
+ <div class="days" id="days"></div>
+ <section class="panel">
+  <div class="panel-head"><div><h2 id="dayHeading">Today's plan</h2><div class="small-muted" id="daySub">One thing at a time.</div></div><button class="primary" id="addTaskBtn">＋ Add task</button></div>
+  <div class="progress-wrap"><div class="progress"><span id="progressFill"></span></div><div class="percent" id="progressText">0%</div></div>
+  <div class="small-muted" id="progressSub" style="margin:7px 0 14px">Your progress for this day</div>
+  <div id="taskList" class="task-list"></div>
+ </section>
+ <section class="panel hidden" id="taskFormPanel">
+  <div class="panel-head"><h2 id="formTitle">New task</h2><button class="icon-btn" id="closeForm" aria-label="Close">✕</button></div>
+  <form id="taskForm">
+   <input id="taskId" type="hidden">
+   <div class="form-grid">
+    <div class="field full"><label for="taskName">Task</label><input id="taskName" required maxlength="100" placeholder="e.g. Revise science lesson"></div>
+    <div class="field"><label for="taskCategory">Category</label><select id="taskCategory"><option>School</option><option>Homework</option><option>Studying</option><option>Personal</option><option>Exercise</option><option>Other</option></select></div>
+    <div class="field"><label for="taskTime">Time (optional)</label><input id="taskTime" type="time"></div>
+    <div class="field"><label for="taskPriority">Priority</label><select id="taskPriority"><option value="Normal">Normal</option><option value="High">High</option><option value="Low">Low</option></select></div>
+    <div class="field"><label for="taskDay">Day</label><select id="taskDay"><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4">Friday</option><option value="5">Saturday</option><option value="6">Sunday</option></select></div>
+   </div>
+   <div class="form-actions"><button class="primary" type="submit">Save task</button><button class="secondary" type="button" id="cancelForm">Cancel</button></div>
+  </form>
+ </section>
+ <section class="panel">
+  <div class="panel-head"><div><h2>Weekly goals</h2><div class="small-muted">Small steps still count.</div></div></div>
+  <form id="goalForm" class="goal-row"><input id="goalInput" maxlength="90" placeholder="One goal for this week…" required><button class="primary" type="submit">Add</button></form>
+  <div id="goalList"></div>
+ </section>
+</section>
+
+<section id="habitsView" class="view">
+ <section class="panel"><div class="panel-head"><div><h2>Habit tracker</h2><div class="small-muted">Build your week, one check at a time.</div></div></div>
+ <div class="field"><label for="habitName">Add a habit</label><div class="goal-row"><input id="habitName" maxlength="50" placeholder="e.g. Read for 15 minutes"><button class="primary" id="addHabit" type="button">Add</button></div></div>
+ <div class="habits" id="habitList"></div></section>
+ <section class="panel"><h2 style="margin-bottom:8px">A gentle reminder</h2><div class="small-muted">You don't need a perfect week. Just keep coming back to your goals.</div></section>
+</section>
+
+<section id="notesView" class="view">
+ <section class="panel"><div class="panel-head"><div><h2>Notes & reminders</h2><div class="small-muted">Your thoughts, all in one place.</div></div><span id="savedLabel" class="small-muted">Auto-saves</span></div>
+ <textarea class="notes" id="notes" placeholder="Write reminders, ideas, things to pack…"></textarea>
+ <p class="small-muted">Notes are saved on this device as you type.</p></section>
+ <section class="panel"><div class="panel-head"><h2>Reset completed tasks</h2></div><div class="small-muted" style="margin-bottom:12px">Remove checked tasks from the current week when you want a fresh list.</div><button class="secondary" id="clearDone">Clear completed tasks</button></section>
+</section>
+</main>
+<nav class="bottom-nav" aria-label="Main navigation">
+ <button class="active" data-view="homeView">☷ &nbsp; Week</button><button data-view="habitsView">✧ &nbsp; Habits</button><button data-view="notesView">▤ &nbsp; Notes</button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+ const FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+ const CATS = {School:'School',Homework:'Homework',Studying:'Study',Personal:'Personal',Exercise:'Exercise',Other:'Other'};
+ const KEY='myWeekPlanner_v1';
+ let state={tasks:[],goals:[],habits:[],notes:''};
+ try { const saved=JSON.parse(localStorage.getItem(KEY)||'null'); if(saved && typeof saved==='object') state={...state,...saved}; } catch(e){}
+ const today=new Date(); const dateKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+ function mondayOf(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x}
+ let weekStart=mondayOf(today), selectedDay=(today.getDay()+6)%7;
+ function weekKey(){return dateKey(weekStart)}
+ function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast('Could not save on this device.');}}
+ function taskDate(day){const d=new Date(weekStart);d.setDate(d.getDate()+day);return dateKey(d)}
+ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1900)}
+ function weekDates(){return Array.from({length:7},(_,i)=>{const d=new Date(weekStart);d.setDate(d.getDate()+i);return d})}
+ function renderDays(){
+  const dates=weekDates(); $('weekLabel').textContent=`${dates[0].toLocaleDateString(undefined,{month:'short',day:'numeric'})} – ${dates[6].toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}`;
+  $('days').innerHTML=dates.map((d,i)=>`<button class="day ${i===selectedDay?'active':''}" data-day="${i}" aria-label="${FULL[i]} ${d.getDate()}"><div class="dname">${DAYS[i]}</div><div class="dnum">${d.getDate()}</div><div class="dot" style="${state.tasks.some(t=>t.date===taskDate(i))?'background:'+(i===selectedDay?'#fff':'var(--brown)') : ''}"></div></button>`).join('');
+  $('days').querySelectorAll('[data-day]').forEach(b=>b.addEventListener('click',()=>{selectedDay=+b.dataset.day;render()}));
+ }
+ function renderTasks(){
+  const date=taskDate(selectedDay);const tasks=state.tasks.filter(t=>t.date===date).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
+  const done=tasks.filter(t=>t.done).length;const pct=tasks.length?Math.round(done/tasks.length*100):0;
+  $('dayHeading').textContent=FULL[selectedDay]+"'s plan";$('daySub').textContent=new Date(date+'T12:00:00').toLocaleDateString(undefined,{month:'long',day:'numeric'})+' · One thing at a time.';
+  $('progressFill').style.width=pct+'%';$('progressText').textContent=pct+'%';$('progressSub').textContent=`${done} of ${tasks.length} tasks completed`;
+  if(!tasks.length){$('taskList').innerHTML='<div class="empty"><span>☕</span>Your day is open and full of possibility.<br>Add a task when you’re ready.</div>';return}
+  $('taskList').innerHTML=tasks.map(t=>`<div class="task ${t.done?'done':''}"><input class="check" type="checkbox" data-check="${t.id}" ${t.done?'checked':''} aria-label="Complete ${escapeHtml(t.title)}"><div class="task-main"><div class="task-title">${escapeHtml(t.title)}</div><div class="task-meta">${t.time?`<span class="tag">${escapeHtml(t.time)}</span>`:''}<span class="tag">${escapeHtml(CATS[t.category]||t.category)}</span>${t.priority==='High'?'<span class="tag priority">High priority</span>':''}</div></div><div class="task-actions"><button class="icon-btn" data-edit="${t.id}" aria-label="Edit task">✎</button><button class="icon-btn" data-delete="${t.id}" aria-label="Delete task">×</button></div></div>`).join('');
+  $('taskList').querySelectorAll('[data-check]').forEach(el=>el.addEventListener('change',()=>{const t=state.tasks.find(x=>x.id===el.dataset.check);if(t)t.done=el.checked;save();render();}));
+  $('taskList').querySelectorAll('[data-edit]').forEach(el=>el.addEventListener('click',()=>openForm(el.dataset.edit)));
+  $('taskList').querySelectorAll('[data-delete]').forEach(el=>el.addEventListener('click',()=>{state.tasks=state.tasks.filter(t=>t.id!==el.dataset.delete);save();render();toast('Task deleted');}));
+ }
+ function openForm(id=''){
+  $('taskFormPanel').classList.remove('hidden');$('taskForm').reset();$('taskId').value=id;
+  $('formTitle').textContent=id?'Edit task':'New task';$('taskDay').value=String(selectedDay);
+  if(id){const t=state.tasks.find(x=>x.id===id);if(t){$('taskName').value=t.title;$('taskCategory').value=t.category;$('taskTime').value=t.time||'';$('taskPriority').value=t.priority;$('taskDay').value=String(Math.max(0,weekDates().findIndex(d=>dateKey(d)===t.date)));}}
+  $('taskName').focus();$('taskFormPanel').scrollIntoView({behavior:'smooth',block:'start'});
+ }
+ function closeForm(){$('taskFormPanel').classList.add('hidden');$('taskForm').reset()}
+ function renderGoals(){
+  $('goalList').innerHTML=state.goals.length?state.goals.map(g=>`<div class="goal"><input type="checkbox" data-goal-check="${g.id}" ${g.done?'checked':''} aria-label="Complete goal"><span style="flex:1;${g.done?'text-decoration:line-through;color:var(--muted)':''}">${escapeHtml(g.title)}</span><button class="icon-btn" data-goal-delete="${g.id}" aria-label="Delete goal">×</button></div>`).join(''):'<div class="small-muted">Your goals will live here. Keep them kind and realistic.</div>';
+  $('goalList').querySelectorAll('[data-goal-check]').forEach(el=>el.addEventListener('change',()=>{const g=state.goals.find(x=>x.id===el.dataset.goalCheck);if(g)g.done=el.checked;save();renderGoals()}));
+  $('goalList').querySelectorAll('[data-goal-delete]').forEach(el=>el.addEventListener('click',()=>{state.goals=state.goals.filter(g=>g.id!==el.dataset.goalDelete);save();renderGoals()}));
+ }
+ function renderHabits(){
+  $('habitList').innerHTML=state.habits.length?state.habits.map(h=>`<div class="habit"><span>${escapeHtml(h.name)} <button class="icon-btn" data-habit-delete="${h.id}" aria-label="Delete habit">×</button></span><div class="habit-days">${DAYS.map((d,i)=>`<button class="${h.days.includes(i)?'on':''}" data-habit="${h.id}" data-hday="${i}" aria-label="${d}">${d[0]}</button>`).join('')}</div></div>`).join(''):'<div class="empty">Add a habit above to start your tracker.</div>';
+  $('habitList').querySelectorAll('[data-habit]').forEach(el=>el.addEventListener('click',()=>{const h=state.habits.find(x=>x.id===el.dataset.habit);const d=+el.dataset.hday;if(h){h.days=h.days.includes(d)?h.days.filter(x=>x!==d):[...h.days,d];save();renderHabits()}}));
+  $('habitList').querySelectorAll('[data-habit-delete]').forEach(el=>el.addEventListener('click',()=>{state.habits=state.habits.filter(h=>h.id!==el.dataset.habitDelete);save();renderHabits()}));
+ }
+ function render(){renderDays();renderTasks();renderGoals();$('todayLabel').textContent=today.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});}
+ $('prevWeek').addEventListener('click',()=>{weekStart.setDate(weekStart.getDate()-7);render()});
+ $('nextWeek').addEventListener('click',()=>{weekStart.setDate(weekStart.getDate()+7);render()});
+ $('todayBtn').addEventListener('click',()=>{weekStart=mondayOf(today);selectedDay=(today.getDay()+6)%7;showView('homeView');render()});
+ $('addTaskBtn').addEventListener('click',()=>openForm());
+ $('closeForm').addEventListener('click',closeForm);$('cancelForm').addEventListener('click',closeForm);
+ $('taskForm').addEventListener('submit',e=>{e.preventDefault();const id=$('taskId').value;const day=+$('taskDay').value;const task={id:id||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())),title:$('taskName').value.trim(),category:$('taskCategory').value,time:$('taskTime').value,priority:$('taskPriority').value,date:taskDate(day),done:id?(state.tasks.find(t=>t.id===id)?.done||false):false};if(!task.title)return;if(id){const idx=state.tasks.findIndex(t=>t.id===id);if(idx>=0)state.tasks[idx]=task;else state.tasks.push(task)}else state.tasks.push(task);selectedDay=day;save();closeForm();render();toast('Task saved ✦')});
+ $('goalForm').addEventListener('submit',e=>{e.preventDefault();const title=$('goalInput').value.trim();if(!title)return;state.goals.push({id:String(Date.now()),title,done:false});$('goalInput').value='';save();renderGoals();toast('Goal added')});
+ $('addHabit').addEventListener('click',()=>{const name=$('habitName').value.trim();if(!name)return;state.habits.push({id:String(Date.now()),name,days:[]});$('habitName').value='';save();renderHabits();toast('Habit added')});
+ $('notes').value=state.notes||'';$('notes').addEventListener('input',()=>{state.notes=$('notes').value;save();$('savedLabel').textContent='Saved ✓'});
+ $('clearDone').addEventListener('click',()=>{if(!confirm('Delete all completed tasks from this week?'))return;const dates=new Set(weekDates().map(dateKey));state.tasks=state.tasks.filter(t=>!(dates.has(t.date)&&t.done));save();render();toast('Completed tasks cleared')});
+ function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));}
+ document.querySelectorAll('.bottom-nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+ render();
+})();
+</script>
+</body>
+</html>
